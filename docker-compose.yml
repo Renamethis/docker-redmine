@@ -1,0 +1,26 @@
+version: '3.5'
+services:
+  db:
+    container_name: db
+    build:
+      context: .
+      dockerfile: ./db.Dockerfile
+    environment:
+      POSTGRES_DB: "postgres"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "secret"
+    volumes:
+      - database:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+      - "3000:3000"
+  ruby:
+    container_name: redmine
+    network_mode: "service:db"
+    build: .
+    environment:
+      RAILS_ENV: production
+    command: bash -c 'bundle exec rake db:migrate ; bundle exec rake redmine:load_default_data ; bundle exec rails server -u webrick -e production'
+
+volumes:
+  database:

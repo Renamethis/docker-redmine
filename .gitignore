@@ -1,0 +1,9 @@
+*
+
+!.gitignore
+!docker-compose.yml
+!db.Dockerfile
+!Dockerfile
+!README.md
+
+
